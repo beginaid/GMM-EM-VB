@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import fire
 from mpl_toolkits.mplot3d import Axes3D
 from numpy import linalg as la
 
@@ -233,3 +234,9 @@ class GMMEM():
             if (np.abs(log_likelihood_list[i] - log_likelihood_list[i+1]) < thr) or (i == iter_max - 1):
                 self.visualize(X)
                 break
+
+def main(K):
+    return GMMEM(K)
+
+if __name__ == "__main__":
+    fire.Fire(main)
