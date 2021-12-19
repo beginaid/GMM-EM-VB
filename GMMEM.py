@@ -232,6 +232,7 @@ class GMMEM():
             print("Previous log-likelihood gap: " + str(np.abs(log_likelihood_list[i] - log_likelihood_list[i+1])))
             # Visualization is performed when the convergence condition is met or when the upper limit is reached
             if (np.abs(log_likelihood_list[i] - log_likelihood_list[i+1]) < thr) or (i == iter_max - 1):
+                print(f"EM algorithm has stopped after {i + 1} iteraion")
                 self.visualize(X)
                 break
 
