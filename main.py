@@ -52,8 +52,8 @@ def main(K, alg):
     # Set the parameters of those algorithm
     iter_max = 100
     thr = 0.01
-    # Create data whose size is 10000
-    X = createData(10000)
+    # Create data at each cluster whose size is 2500, resulting in 10000 data overall
+    X = createData(2500)
     # Instantiate the model
     if alg == "EM":
         model = GMMEM.main(K=K)
