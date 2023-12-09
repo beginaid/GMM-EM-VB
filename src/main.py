@@ -5,6 +5,7 @@ import fire
 import GMMEM
 import GMMVB
 
+
 def createData():
     """Create 3-dimensional data that is divided into 4 clusters.
 
@@ -12,7 +13,7 @@ def createData():
         None.
 
     Returns:
-        X (numpy ndarray): Input data whose size is (N, 3).        
+        X (numpy ndarray): Input data whose size is (N, 3).
 
     """
     # The number of data at each cluster
@@ -25,7 +26,7 @@ def createData():
     Mu1 = [5, -5, -5]
     Mu2 = [-5, 5, 5]
     Mu3 = [-5, -5, -5]
-    Mu4 = [5, 5, 5]    
+    Mu4 = [5, 5, 5]
 
     # Variance-covariance matrices
     Sigma1 = [[1, 0, -0.25], [0, 1, 0], [-0.25, 0, 1]]
@@ -37,9 +38,10 @@ def createData():
     X1 = np.random.multivariate_normal(Mu1, Sigma1, N1)
     X2 = np.random.multivariate_normal(Mu2, Sigma2, N2)
     X3 = np.random.multivariate_normal(Mu3, Sigma3, N3)
-    X4 = np.random.multivariate_normal(Mu4, Sigma4, N4)   
+    X4 = np.random.multivariate_normal(Mu4, Sigma4, N4)
 
     return np.concatenate([X1, X2, X3, X4])
+
 
 def main(K, alg):
     """Execute EM algorithm or variational bayes.
@@ -74,6 +76,7 @@ def main(K, alg):
         sys.stderr.write("Please specify the argument alg as EM or VB.")
     # Execute the algorithm
     model.execute(X, iter_max=iter_max, thr=thr)
+
 
 if __name__ == "__main__":
     fire.Fire(main)

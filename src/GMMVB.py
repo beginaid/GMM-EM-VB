@@ -38,7 +38,7 @@ class GMMVB():
         # Set the initial weighting factors
         self.alpha0 = 0.01
         self.beta0 = 1.0
-        self.nu0 = self.D
+        self.nu0 = float(self.D)
         self.m0 = np.random.randn(self.D)
         self.W0 = np.eye(self.D)
         self.r = np.random.randn(self.N, self.K)
@@ -59,7 +59,7 @@ class GMMVB():
             Probability density function (numpy ndarray): Values of the mixed D-dimensional Gaussian distribution at N data whose size is (N, K).
         """
         pi = self.alpha / (np.sum(self.alpha, keepdims=True) + np.spacing(1)) # (K)
-        return np.array([pi[k] * multivariate_normal.pdf(X, mean=self.m[k], cov=(self.nu[:,None,None] * self.W)[k]) for k in range(self.K)]).T # (N, K)
+        return np.array([pi[k] * multivariate_normal.pdf(X, mean=self.m[k], cov=la.pinv(self.nu[:,None,None] * self.W)[k]) for k in range(self.K)]).T # (N, K)
 
     def e_step(self, X):
         """Execute the variational E-step of VB.
@@ -107,8 +107,8 @@ class GMMVB():
         self.beta = self.beta0 + N_k #(K)
         self.nu = self.nu0 + N_k #(K)
         self.m = (np.tile((self.beta0 * self.m0)[None,:], (self.K, 1)) + (N_k[:, None] * x_bar)) / (self.beta[:,None] + np.spacing(1)) # (K, D)
-        W_inv = la.inv(self.W0) + (N_k[:,None,None] * S) + (((self.beta0 * N_k)[:,None,None] * res_error_bar[:,:,None] @ res_error_bar[:,None,:]) / (self.beta0 + N_k)[:,None,None] + np.spacing(1)) # (K, D, D)
-        self.W = la.inv(W_inv) # (K, D, D)
+        W_inv = la.pinv(self.W0) + (N_k[:,None,None] * S) + (((self.beta0 * N_k)[:,None,None] * res_error_bar[:,:,None] @ res_error_bar[:,None,:]) / (self.beta0 + N_k)[:,None,None] + np.spacing(1)) # (K, D, D)
+        self.W = la.pinv(W_inv) # (K, D, D)
 
     def visualize(self, X):
         """Execute the classification.
@@ -126,6 +126,7 @@ class GMMVB():
         # Prepare the visualization
         fig = plt.figure(figsize=(4, 4), dpi=300)
         ax = Axes3D(fig)
+        fig.add_axes(ax)
         # Use the custome color list.
         cm = plt.get_cmap("tab10")
         # Remove ticks
