@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import sys
 import fire
 import GMMEM
@@ -56,6 +57,9 @@ def main(K, alg):
         The execute method of each model includes visualization function, and therefore you can get the result of clustering as an image.
 
     """
+    # Create results directory to output images
+    if not os.path.isdir("results"):
+        os.makedirs("results")
     # Set the parameters of those algorithm
     iter_max = 100
     thr = 0.001

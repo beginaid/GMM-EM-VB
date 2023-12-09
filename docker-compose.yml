@@ -1,0 +1,9 @@
+services:
+  python3:
+    build: .
+    container_name: GMM-EM-VB
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    # python main.py --K [The number of clusters] --alg [EM or VB]
+    entrypoint: python src/main.py --K 4 --alg VB
